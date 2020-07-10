@@ -6,7 +6,7 @@ import io.horizontalsystems.feeratekit.model.FeeRate
 import io.horizontalsystems.feeratekit.providers.FeeRateProviderManager
 import io.horizontalsystems.feeratekit.storage.InMemoryStorage
 import io.reactivex.Single
-import io.reactivex.functions.Function5
+import io.reactivex.functions.Function6
 
 class FeeRateKit(providerConfig: FeeProviderConfig) {
 
@@ -27,6 +27,10 @@ class FeeRateKit(providerConfig: FeeProviderConfig) {
 
     fun dash(): Single<FeeRate> {
         return getRate(Coin.DASH)
+    }
+
+    fun indexchain(): Single<FeeRate> {
+        return getRate(Coin.INDEXCHAIN)
     }
 
     fun ethereum(): Single<FeeRate> {
@@ -58,8 +62,9 @@ class FeeRateKit(providerConfig: FeeProviderConfig) {
             getStatusData(Coin.ETHEREUM),
             getStatusData(Coin.BITCOIN_CASH),
             getStatusData(Coin.DASH),
-            Function5<Any, Any, Any, Any, Any, Array<Any>> { btcRate, ltcRate, ethRate, bchRate, dashRate ->
-                arrayOf(btcRate, ltcRate, ethRate, bchRate, dashRate)
+            getStatusData(Coin.INDEXCHAIN),
+            Function6<Any, Any, Any, Any, Any, Any, Array<Any>> { btcRate, ltcRate, ethRate, bchRate, dashRate, indexRate ->
+                arrayOf(btcRate, ltcRate, ethRate, bchRate, dashRate,indexRate)
             })
             .map { rates ->
 

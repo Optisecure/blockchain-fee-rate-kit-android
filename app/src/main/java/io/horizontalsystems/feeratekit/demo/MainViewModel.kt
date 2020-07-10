@@ -53,6 +53,12 @@ class MainViewModel : ViewModel() {
                 feeRateData.postValue(t)
             })
 
+        compositeDisposable.add(feeRateKit.getRate("IDX")
+            .subscribeOn(Schedulers.io())
+            .subscribe { t ->
+                feeRateData.postValue(t)
+            })
+
         compositeDisposable.add(feeRateKit.getRate("ETH")
             .subscribeOn(Schedulers.io())
             .subscribe() { t ->
